@@ -1,95 +1,12 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan - ROTASI STOK</title>
+@extends('layouts.app')
 
+@section('title', 'Laporan - ROTASI STOK')
+@section('heading', 'Laporan Stok dan Transaksi')
+@section('subheading', 'Laporan persediaan dan aktivitas transaksi toko.')
+
+@push('styles')
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        body {
-            background: #f4f6fb;
-            color: #263238;
-        }
-
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #172554;
-            color: white;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 25px 18px;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px 0 35px;
-        }
-
-        .menu-title {
-            font-size: 11px;
-            color: #a5b4fc;
-            margin: 18px 10px 12px;
-            font-weight: bold;
-        }
-
-        .sidebar a {
-            display: block;
-            color: #dbeafe;
-            text-decoration: none;
-            padding: 13px 14px;
-            margin-bottom: 7px;
-            border-radius: 9px;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background: #2563eb;
-            color: white;
-        }
-
-        .logout-button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 9px;
-            background: #dc2626;
-            color: white;
-            cursor: pointer;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .main {
-            margin-left: 250px;
-            padding: 30px;
-        }
-
-        .header {
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            color: #172554;
-            font-size: 27px;
-        }
-
-        .header p {
-            color: #64748b;
-            margin-top: 7px;
-        }
-
         .panel {
             background: white;
             padding: 24px;
@@ -269,17 +186,6 @@
         }
 
         @media(max-width: 700px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 18px;
-            }
-
             .filter-form {
                 flex-direction: column;
                 align-items: stretch;
@@ -292,14 +198,16 @@
                 color: black;
             }
 
-            .sidebar,
+            .app-sidebar,
+            .app-topbar,
             .filter-panel,
             .no-print,
+            .app-footer,
             .footer {
                 display: none !important;
             }
 
-            .main {
+            .app-main {
                 margin: 0;
                 padding: 0;
             }
@@ -330,61 +238,9 @@
             }
         }
     </style>
-</head>
+@endpush
 
-<body>
-
-<aside class="sidebar">
-    <div class="logo">📦 ROTASI STOK</div>
-
-    <div class="menu-title">MENU UTAMA</div>
-
-    <a href="{{ route('dashboard') }}"
-       class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        🏠 Dashboard
-    </a>
-
-    <a href="{{ route('barang.index') }}"
-       class="{{ request()->routeIs('barang.*') ? 'active' : '' }}">
-        📦 Data Barang
-    </a>
-
-    <a href="{{ route('barang-masuk.index') }}"
-       class="{{ request()->routeIs('barang-masuk.*') ? 'active' : '' }}">
-        📥 Barang Masuk
-    </a>
-
-    <a href="{{ route('barang-keluar.index') }}"
-       class="{{ request()->routeIs('barang-keluar.*') ? 'active' : '' }}">
-        📤 Barang Keluar
-    </a>
-
-    <a href="{{ route('transaksi.riwayat') }}"
-       class="{{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
-        📋 Riwayat Transaksi
-    </a>
-
-    <a href="{{ route('laporan.index') }}"
-       class="{{ request()->routeIs('laporan.*') ? 'active' : '' }}">
-        📑 Laporan
-    </a>
-
-    <div class="menu-title">AKUN</div>
-
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="logout-button">
-            🚪 Logout
-        </button>
-    </form>
-</aside>
-
-<main class="main">
-
-    <div class="header">
-        <h1>📑 Laporan Stok dan Transaksi</h1>
-        <p>Laporan persediaan dan aktivitas transaksi toko.</p>
-    </div>
+@section('content')
 
     <div class="report-heading">
         <h1>ROTASI STOK</h1>
@@ -667,11 +523,4 @@
         </button>
     </div>
 
-    <div class="footer">
-        © {{ date('Y') }} ROTASI STOK - Sistem Informasi Pengelolaan Stok Barang
-    </div>
-
-</main>
-
-</body>
-</html>
+@endsection

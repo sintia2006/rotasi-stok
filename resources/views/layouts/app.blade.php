@@ -1,265 +1,270 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Rotasi Stok Retail')</title>
 
     <style>
+        :root {
+            --app-bg: #f3f6fc;
+            --app-surface: #ffffff;
+            --app-surface-soft: #f5f8fd;
+            --app-text: #25344a;
+            --app-heading: #1f3350;
+            --app-muted: #8a98aa;
+            --app-border: #e9eef6;
+            --app-primary: #2478dc;
+            --app-primary-dark: #1765c0;
+            --app-danger: #d94d6c;
+            --app-success: #1f9d6b;
+            --app-warning: #c77a31;
+            --app-radius: 14px;
+            --app-shadow: 0 3px 16px rgba(30, 55, 90, .05);
+            --app-sidebar-width: 260px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background: #f3f6fc;
-            color: #25344a;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 255px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #172b4d;
-            color: white;
-            padding: 25px 16px;
-            overflow-y: auto;
-            z-index: 100;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 5px 8px 28px;
-            border-bottom: 1px solid rgba(255,255,255,.12);
-        }
-
-        .logo-icon {
-            width: 43px;
-            height: 43px;
-            background: #2478dc;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 23px;
-        }
-
-        .logo h2 {
-            font-size: 17px;
-            letter-spacing: .5px;
-        }
-
-        .logo small {
-            color: #aabbd5;
-            font-size: 11px;
-        }
-
-        .menu-title {
-            color: #8fa4c3;
-            font-size: 10px;
-            font-weight: bold;
-            letter-spacing: 1.3px;
-            margin: 26px 12px 12px;
-            text-transform: uppercase;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            color: #d5dfef;
-            text-decoration: none;
-            padding: 12px 14px;
-            margin-bottom: 5px;
-            border-radius: 9px;
-            font-size: 13px;
-            transition: .25s;
-        }
-
-        .sidebar a:hover {
-            background: rgba(255,255,255,.10);
-            color: white;
-            transform: translateX(3px);
-        }
-
-        .sidebar a.active {
-            background: linear-gradient(135deg, #2688ef, #1765c0);
-            color: white;
-            box-shadow: 0 5px 14px rgba(22,105,205,.25);
-        }
-
-        .menu-icon {
-            width: 21px;
-            text-align: center;
-            font-size: 17px;
-        }
-
-        .sidebar-footer {
-            border-top: 1px solid rgba(255,255,255,.12);
-            margin-top: 25px;
-            padding-top: 15px;
-        }
-
-        .logout-button {
-            display: flex;
-            width: 100%;
-            align-items: center;
-            gap: 13px;
-            background: transparent;
-            color: #ffb8b8;
-            border: none;
-            padding: 12px 14px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-size: 13px;
-            text-align: left;
-        }
-
-        .logout-button:hover {
-            background: rgba(255,80,80,.13);
-        }
-
-        /* MAIN CONTENT */
-        .main-content {
-            margin-left: 255px;
-            padding: 25px 30px;
             min-height: 100vh;
+            background: var(--app-bg);
+            color: var(--app-text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        /* SHELL */
+        .app-main {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            min-height: 100vh;
+            margin-left: var(--app-sidebar-width);
+            padding: 24px 28px;
+        }
+
+        .app-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-footer {
+            padding-top: 4px;
+            color: var(--app-muted);
+            font-size: 12px;
+            text-align: center;
         }
 
         /* TOPBAR */
-        .topbar {
-            background: white;
-            padding: 17px 23px;
-            border-radius: 14px;
+        .app-topbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 3px 15px rgba(30,55,90,.04);
-            border: 1px solid #edf0f6;
+            gap: 18px;
+            padding: 16px 22px;
+            background: var(--app-surface);
+            border: 1px solid var(--app-border);
+            border-radius: var(--app-radius);
+            box-shadow: var(--app-shadow);
         }
 
-        .topbar h2 {
-            font-size: 19px;
-            color: #203653;
-        }
-
-        .topbar p {
-            color: #8a98aa;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-
-        .admin-info {
+        .app-topbar__left {
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 14px;
+            min-width: 0;
         }
 
-        .admin-avatar {
+        .app-topbar__heading {
+            min-width: 0;
+        }
+
+        .app-topbar__heading h1 {
+            color: var(--app-heading);
+            font-size: 19px;
+            line-height: 1.25;
+        }
+
+        .app-topbar__heading p {
+            margin-top: 4px;
+            color: var(--app-muted);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 40px;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background: #e5efff;
-            color: #216ac0;
+            padding: 0;
+            color: var(--app-heading);
+            font-size: 20px;
+            background: var(--app-surface-soft);
+            border: 1px solid var(--app-border);
+            border-radius: 11px;
+            cursor: pointer;
+        }
+
+        .sidebar-toggle:hover {
+            color: var(--app-primary);
+            border-color: var(--app-primary);
+        }
+
+        .sidebar-toggle:focus-visible {
+            outline: 2px solid var(--app-primary);
+            outline-offset: 2px;
+        }
+
+        .app-topbar__right {
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-weight: bold;
-            font-size: 16px;
+            gap: 12px;
+            flex: 0 0 auto;
         }
 
-        .admin-name {
+        .app-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 12px;
+            border-left: 1px solid var(--app-border);
+        }
+
+        .app-user__avatar {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            color: var(--app-primary);
+            font-size: 15px;
+            font-weight: 700;
+            background: #e8f1ff;
+            border-radius: 50%;
+        }
+
+        .app-user__name {
+            color: var(--app-heading);
             font-size: 13px;
-            font-weight: bold;
-            color: #263b57;
+            font-weight: 700;
+            line-height: 1.3;
         }
 
-        .admin-role {
+        .app-user__role {
+            margin-top: 2px;
+            color: var(--app-muted);
             font-size: 11px;
-            color: #94a0b1;
-            margin-top: 3px;
         }
 
-        /* CONTENT */
-        .content {
-            background: white;
-            padding: 25px;
-            border-radius: 14px;
-            min-height: 400px;
-            border: 1px solid #edf0f6;
-            box-shadow: 0 3px 15px rgba(30,55,90,.04);
+        /* REUSABLE PANEL */
+        .panel {
+            padding: 22px;
+            background: var(--app-surface);
+            border: 1px solid var(--app-border);
+            border-radius: var(--app-radius);
+            box-shadow: var(--app-shadow);
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 215px;
-            }
+        /* TOPBAR ACTIONS */
+        .topbar-icon-btn {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            color: var(--app-heading);
+            text-decoration: none;
+            background: var(--app-surface-soft);
+            border: 1px solid var(--app-border);
+            border-radius: 11px;
+            transition: border-color .2s ease, transform .2s ease;
+        }
 
-            .main-content {
-                margin-left: 215px;
+        .topbar-icon-btn:hover {
+            border-color: var(--app-primary);
+            transform: translateY(-2px);
+        }
+
+        .topbar-icon-btn__dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #ff5d75;
+            border: 2px solid var(--app-surface);
+            border-radius: 50%;
+        }
+
+        @media (max-width: 992px) {
+            .app-main {
+                margin-left: 0;
                 padding: 18px;
             }
+
+            .sidebar-toggle {
+                display: inline-flex;
+            }
+
+            .app-topbar {
+                padding: 14px 16px;
+            }
         }
 
-        @media (max-width: 600px) {
-            .sidebar {
-                width: 70px;
-                padding: 20px 9px;
+        @media (max-width: 640px) {
+            .app-main {
+                gap: 16px;
+                padding: 14px 12px;
             }
 
-            .logo {
-                justify-content: center;
-                padding: 5px 0 20px;
+            .app-topbar {
+                gap: 12px;
             }
 
-            .logo-text,
-            .menu-title,
-            .menu-label {
+            .app-topbar__heading h1 {
+                font-size: 16px;
+            }
+
+            .app-topbar__heading p {
                 display: none;
             }
 
-            .sidebar a,
-            .logout-button {
-                justify-content: center;
-                padding: 13px 5px;
+            .app-user {
+                padding-left: 0;
+                border-left: 0;
             }
 
-            .menu-icon {
-                font-size: 20px;
-            }
-
-            .main-content {
-                margin-left: 70px;
-                padding: 12px;
-            }
-
-            .topbar {
-                padding: 13px;
-            }
-
-            .topbar h2 {
-                font-size: 15px;
-            }
-
-            .admin-name,
-            .admin-role {
+            .app-user__text {
                 display: none;
             }
 
-            .content {
-                padding: 15px;
+            .app-footer {
+                font-size: 11px;
             }
         }
     </style>
@@ -269,123 +274,102 @@
 
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <x-sidebar />
 
-        <div class="logo">
-            <div class="logo-icon">📦</div>
+    <button type="button"
+            class="app-sidebar-overlay"
+            data-sidebar-close
+            aria-label="Tutup menu"
+            tabindex="-1"></button>
 
-            <div class="logo-text">
-                <h2>ROTASI STOK</h2>
-                <small>Retail Inventory</small>
-            </div>
-        </div>
-
-        <div class="menu-title">Menu Utama</div>
-
-        <a href="{{ route('dashboard') }}"
-           class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <span class="menu-icon">🏠</span>
-            <span class="menu-label">Dashboard</span>
-        </a>
-
-        <a href="{{ route('barang.index') }}"
-           class="{{ request()->routeIs('barang.*') ? 'active' : '' }}">
-            <span class="menu-icon">📦</span>
-            <span class="menu-label">Data Barang</span>
-        </a>
-
-        <a href="{{ route('barang-masuk.index') }}"
-           class="{{ request()->routeIs('barang-masuk.*') ? 'active' : '' }}">
-            <span class="menu-icon">📥</span>
-            <span class="menu-label">Barang Masuk</span>
-        </a>
-
-        <a href="{{ route('barang-keluar.index') }}"
-           class="{{ request()->routeIs('barang-keluar.*') ? 'active' : '' }}">
-            <span class="menu-icon">📤</span>
-            <span class="menu-label">Barang Keluar</span>
-        </a>
-
-        <a href="{{ route('transaksi.riwayat') }}"
-           class="{{ request()->routeIs('transaksi.riwayat') ? 'active' : '' }}">
-            <span class="menu-icon">🔄</span>
-            <span class="menu-label">Riwayat Transaksi</span>
-        </a>
-
-        <a href="{{ route('laporan.index') }}"
-           class="{{ request()->routeIs('laporan.*') ? 'active' : '' }}">
-            <span class="menu-icon">📊</span>
-            <span class="menu-label">Laporan</span>
-        </a>
-
-        <div class="menu-title">Pengaturan Akun</div>
-
-        <a href="{{ route('profile.edit') }}"
-           class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
-            <span class="menu-icon">👤</span>
-            <span class="menu-label">Profil Admin</span>
-        </a>
-
-        <a href="{{ route('users.index') }}"
-           class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
-            <span class="menu-icon">👥</span>
-            <span class="menu-label">Manajemen Pengguna</span>
-        </a>
-
-        <div class="sidebar-footer">
-
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-
-                <button type="submit" class="logout-button">
-                    <span class="menu-icon">🚪</span>
-                    <span class="menu-label">Logout</span>
+    <div class="app-main">
+        <header class="app-topbar">
+            <div class="app-topbar__left">
+                <button type="button"
+                        class="sidebar-toggle"
+                        data-sidebar-toggle
+                        aria-controls="app-sidebar"
+                        aria-expanded="false"
+                        aria-label="Buka menu navigasi">
+                    ☰
                 </button>
-            </form>
 
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-
-        <header class="topbar">
-
-            <div>
-                <h2>@yield('heading', 'Dashboard')</h2>
-                <p>Sistem Informasi Pengelolaan Stok Retail</p>
+                <div class="app-topbar__heading">
+                    <h1>@yield('heading', 'Dashboard')</h1>
+                    <p>@yield('subheading', 'Sistem Informasi Pengelolaan Stok Retail')</p>
+                </div>
             </div>
 
-            <div class="admin-info">
+            <div class="app-topbar__right">
+                @yield('actions')
 
-                <div class="admin-avatar">
-                    👤
-                </div>
-
-                <div>
-                    <div class="admin-name">
-                        {{ auth()->user()->name ?? 'Admin' }}
+                <div class="app-user">
+                    <div class="app-user__avatar" aria-hidden="true">
+                        {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
                     </div>
 
-                    <div class="admin-role">
-                        Administrator
+                    <div class="app-user__text">
+                        <div class="app-user__name">{{ auth()->user()->name ?? 'Admin' }}</div>
+                        <div class="app-user__role">Administrator</div>
                     </div>
                 </div>
-
             </div>
-
         </header>
 
-
-        <!-- ISI HALAMAN -->
-        <section class="content">
+        <main class="app-content">
             @yield('content')
-        </section>
+        </main>
 
-    </main>
+        <footer class="app-footer">
+            © {{ date('Y') }} Rotasi Stok — Sistem Informasi Pengelolaan Stok Retail
+        </footer>
+    </div>
 
+    <script>
+        (function () {
+            const sidebar = document.getElementById('app-sidebar');
+            const toggle = document.querySelector('[data-sidebar-toggle]');
+            const overlay = document.querySelector('[data-sidebar-close]');
+
+            if (!sidebar || !toggle) {
+                return;
+            }
+
+            function setOpen(isOpen) {
+                sidebar.classList.toggle('is-open', isOpen);
+                overlay?.classList.toggle('is-visible', isOpen);
+                document.body.classList.toggle('sidebar-open', isOpen);
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            }
+
+            toggle.addEventListener('click', function () {
+                setOpen(!sidebar.classList.contains('is-open'));
+            });
+
+            overlay?.addEventListener('click', function () {
+                setOpen(false);
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    setOpen(false);
+                }
+            });
+
+            sidebar.querySelectorAll('a, button').forEach(function (element) {
+                element.addEventListener('click', function () {
+                    setOpen(false);
+                });
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 992) {
+                    setOpen(false);
+                }
+            });
+        })();
+    </script>
+
+    @stack('scripts')
 </body>
 </html>

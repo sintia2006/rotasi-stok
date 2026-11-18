@@ -1,96 +1,66 @@
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Pengguna | Rotasi Stok Retail</title>
+@section('title', 'Tambah Pengguna | Rotasi Stok Retail')
+@section('heading', 'Tambah Pengguna')
+@section('subheading', 'Tambahkan akun pengguna baru ke sistem.')
 
+@push('styles')
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        body {
-            background: #f3f6fa;
-            color: #263445;
-        }
-
-        .container {
+        .form-card {
             max-width: 750px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .header {
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            font-size: 27px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #718096;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.05);
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            font-weight: 600;
-            font-size: 14px;
             margin-bottom: 8px;
+            color: var(--app-heading);
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        input {
+        .form-group input {
             width: 100%;
-            padding: 13px;
+            padding: 12px 13px;
+            color: var(--app-text);
+            background: var(--app-surface);
             border: 1px solid #dce3ec;
             border-radius: 8px;
             outline: none;
         }
 
-        input:focus {
-            border-color: #2875bd;
+        .form-group input:focus {
+            border-color: var(--app-primary);
+            box-shadow: 0 0 0 3px rgba(36, 120, 220, .1);
         }
 
         .error {
-            color: #d33b3b;
-            font-size: 13px;
             margin-top: 6px;
+            color: var(--app-danger);
+            font-size: 13px;
         }
 
         .info {
-            background: #edf5ff;
-            color: #3566a0;
+            margin-bottom: 22px;
             padding: 13px;
+            color: #3566a0;
+            background: #edf5ff;
             border-radius: 8px;
             font-size: 13px;
-            margin-bottom: 22px;
         }
 
         .buttons {
             display: flex;
             gap: 10px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 13px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 8px;
             text-decoration: none;
@@ -100,38 +70,23 @@
         }
 
         .btn-save {
-            background: #2875bd;
-            color: white;
+            color: #fff;
+            background: var(--app-primary);
+        }
+
+        .btn-save:hover {
+            background: var(--app-primary-dark);
         }
 
         .btn-back {
-            background: #e9edf3;
             color: #39465a;
-        }
-
-        @media(max-width: 600px) {
-            .container {
-                margin: 15px auto;
-            }
-
-            .card {
-                padding: 20px;
-            }
+            background: #e9edf3;
         }
     </style>
-</head>
+@endpush
 
-<body>
-
-<div class="container">
-
-    <div class="header">
-        <h1>Tambah Pengguna</h1>
-        <p>Tambahkan akun pengguna baru ke sistem.</p>
-    </div>
-
-    <div class="card">
-
+@section('content')
+    <div class="panel form-card">
         <div class="info">
             Lengkapi seluruh informasi di bawah untuk membuat akun pengguna baru.
         </div>
@@ -140,8 +95,9 @@
             @csrf
 
             <div class="form-group">
-                <label>Nama Lengkap</label>
+                <label for="name">Nama Lengkap</label>
                 <input type="text"
+                       id="name"
                        name="name"
                        value="{{ old('name') }}"
                        placeholder="Masukkan nama lengkap"
@@ -152,8 +108,9 @@
             </div>
 
             <div class="form-group">
-                <label>Username</label>
+                <label for="username">Username</label>
                 <input type="text"
+                       id="username"
                        name="username"
                        value="{{ old('username') }}"
                        placeholder="Masukkan username"
@@ -164,8 +121,9 @@
             </div>
 
             <div class="form-group">
-                <label>Email</label>
+                <label for="email">Email</label>
                 <input type="email"
+                       id="email"
                        name="email"
                        value="{{ old('email') }}"
                        placeholder="Masukkan email"
@@ -176,8 +134,9 @@
             </div>
 
             <div class="form-group">
-                <label>Password</label>
+                <label for="password">Password</label>
                 <input type="password"
+                       id="password"
                        name="password"
                        placeholder="Minimal 8 karakter"
                        required
@@ -188,8 +147,9 @@
             </div>
 
             <div class="form-group">
-                <label>Konfirmasi Password</label>
+                <label for="password_confirmation">Konfirmasi Password</label>
                 <input type="password"
+                       id="password_confirmation"
                        name="password_confirmation"
                        placeholder="Ulangi password"
                        required
@@ -205,12 +165,6 @@
                     Kembali
                 </a>
             </div>
-
         </form>
-
     </div>
-
-</div>
-
-</body>
-</html>
+@endsection

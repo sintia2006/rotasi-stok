@@ -3,9 +3,9 @@
 
 @section('title', 'Manajemen FIFO')
 @section('heading', 'Manajemen FIFO')
+@section('subheading', 'Pantau sisa stok berdasarkan urutan batch First In First Out.')
 
-@section('content')
-
+@push('styles')
 <style>
     .fifo-wrapper {
         padding: 10px 0;
@@ -170,7 +170,9 @@
         }
     }
 </style>
+@endpush
 
+@section('content')
 <div class="fifo-wrapper">
 
     <div class="fifo-header">

@@ -1,154 +1,140 @@
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Pengguna - Rotasi Stok Retail</title>
+@section('title', 'Edit Pengguna | Rotasi Stok Retail')
+@section('heading', 'Edit Pengguna')
+@section('subheading', 'Perbarui informasi akun pengguna.')
 
+@push('styles')
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            margin: 0;
-            padding: 30px;
-            background: #f4f6fb;
-            color: #263247;
-        }
-
-        .container {
+        .form-card {
             max-width: 650px;
-            margin: 30px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 14px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
         }
 
-        h2 {
-            margin-top: 0;
-            color: #243b64;
+        .form-card h2 {
+            color: var(--app-heading);
         }
 
-        p {
-            color: #718096;
+        .form-group {
+            margin-bottom: 18px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            margin: 17px 0 7px;
-            font-weight: bold;
+            margin-bottom: 7px;
+            color: var(--app-heading);
+            font-size: 14px;
+            font-weight: 700;
         }
 
-        input {
+        .form-group input {
             width: 100%;
             padding: 12px;
+            color: var(--app-text);
+            background: var(--app-surface);
             border: 1px solid #dce2ec;
             border-radius: 8px;
             outline: none;
         }
 
-        input:focus {
-            border-color: #3975d7;
+        .form-group input:focus {
+            border-color: var(--app-primary);
+            box-shadow: 0 0 0 3px rgba(36, 120, 220, .1);
         }
 
         .hint {
-            font-size: 12px;
-            color: #718096;
             margin-top: 6px;
+            color: var(--app-muted);
+            font-size: 12px;
         }
 
         .error {
-            color: #c0392b;
-            font-size: 13px;
             margin-top: 5px;
-        }
-
-        .success {
-            background: #e2f7e9;
-            color: #247542;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            color: var(--app-danger);
+            font-size: 13px;
         }
 
         .buttons {
             display: flex;
             gap: 10px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
 
-        button, .back {
-            border: none;
+        .btn {
             padding: 12px 18px;
+            border: none;
             border-radius: 8px;
             text-decoration: none;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 14px;
         }
 
-        button {
-            background: #3975d7;
-            color: white;
+        .btn-save {
+            color: #fff;
+            background: var(--app-primary);
         }
 
-        .back {
-            background: #e9edf4;
+        .btn-save:hover {
+            background: var(--app-primary-dark);
+        }
+
+        .btn-back {
             color: #344054;
+            background: #e9edf4;
         }
     </style>
-</head>
+@endpush
 
-<body>
+@section('content')
+    <div class="panel form-card">
+        @if ($errors->any())
+            <div class="error">
+                <ul style="margin-left: 18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-<div class="container">
+        <form action="{{ route('users.update', $user->id) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-    <h2>✏️ Edit Pengguna</h2>
-    <p>Perbarui informasi akun pengguna.</p>
+            <div class="form-group">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" name="name"
+                       value="{{ old('name', $user->name) }}" required>
+            </div>
 
-    @if ($errors->any())
-        <div class="error">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"
+                       value="{{ old('username', $user->username) }}" required>
+            </div>
 
-    <form action="{{ route('users.update', $user->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"
+                       value="{{ old('email', $user->email) }}" required>
+            </div>
 
-        <label>Nama Lengkap</label>
-        <input type="text" name="name"
-               value="{{ old('name', $user->name) }}" required>
+            <div class="form-group">
+                <label for="password">Password Baru</label>
+                <input type="password" id="password" name="password">
+                <div class="hint">Kosongkan jika tidak ingin mengganti password.</div>
+            </div>
 
-        <label>Username</label>
-        <input type="text" name="username"
-               value="{{ old('username', $user->username) }}" required>
+            <div class="form-group">
+                <label for="password_confirmation">Konfirmasi Password Baru</label>
+                <input type="password" id="password_confirmation" name="password_confirmation">
+            </div>
 
-        <label>Email</label>
-        <input type="email" name="email"
-               value="{{ old('email', $user->email) }}" required>
-
-        <label>Password Baru</label>
-        <input type="password" name="password">
-        <div class="hint">Kosongkan jika tidak ingin mengganti password.</div>
-
-        <label>Konfirmasi Password Baru</label>
-        <input type="password" name="password_confirmation">
-
-        <div class="buttons">
-            <button type="submit">Simpan Perubahan</button>
-            <a href="{{ route('users.index') }}" class="back">Kembali</a>
-        </div>
-    </form>
-
-</div>
-
-</body>
-</html>
+            <div class="buttons">
+                <button type="submit" class="btn btn-save">Simpan Perubahan</button>
+                <a href="{{ route('users.index') }}" class="btn btn-back">Kembali</a>
+            </div>
+        </form>
+    </div>
+@endsection
